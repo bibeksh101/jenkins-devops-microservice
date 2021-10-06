@@ -28,7 +28,7 @@ pipeline {
 				sh 'mvn --version'
 				sh 'docker version'
 				echo "Build"
-				echo "$PATH"
+				echo "Path- $PATH"
 				echo "BUILD_NUMBER - $env.BUILD_NUMBER"
 				echo "JOB NAME- $env.JOB_NAME"
 			}
@@ -48,26 +48,26 @@ pipeline {
 				sh "mvn failsafe:integration-test: failsafe:verify"
 			}
 		}
-		stage('Build Docker Image') {
-			steps {
-				//PRIMITIME METHOD
-				//docker build -t bibekshr001/currency-exchange-devops:$env.Build_TAG
+		// stage('Build Docker Image') {
+		// 	steps {
+		// 		//PRIMITIME METHOD
+		// 		//docker build -t bibekshr001/currency-exchange-devops:$env.Build_TAG
 
-				//BETTER HERE
-				script{
-					dockerImage = docker.build("bibekshr001/currency-exchange-devops:${env.BUILD_TAG}")
-				}
-			}
-		}
-		stage('Push Docker Image') {
-			steps {
-				docker.withRegistry('','dockerhub'){
-					dockerImage.push();
-					dockerImage.push('latest');
-				}
+		// 		//BETTER HERE
+		// 		script{
+		// 			dockerImage = docker.build("bibekshr001/currency-exchange-devops:${env.BUILD_TAG}")
+		// 		}
+		// 	}
+		// }
+		// stage('Push Docker Image') {
+		// 	steps {
+		// 		docker.withRegistry('','dockerhub'){
+		// 			dockerImage.push();
+		// 			dockerImage.push('latest');
+		// 		}
 				
-			}
-		}	
+		// 	}
+		// }	
 				
 	}
 		post{
