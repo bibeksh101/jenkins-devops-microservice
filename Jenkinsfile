@@ -38,36 +38,36 @@ pipeline {
 				sh "mvn clean compile"
 			}
 		}
-		stage('Tests') {
-			steps {
-				sh "mvn test"
-			}
-		}
-		stage('Integration Tests') {
-			steps {
-				sh "mvn failsafe:integration-test: failsafe:verify"
-			}
-		}
-		// stage('Build Docker Image') {
+		// stage('Tests') {
 		// 	steps {
-		// 		//PRIMITIME METHOD
-		// 		//docker build -t bibekshr001/currency-exchange-devops:$env.Build_TAG
-
-		// 		//BETTER HERE
-		// 		script{
-		// 			dockerImage = docker.build("bibekshr001/currency-exchange-devops:${env.BUILD_TAG}")
-		// 		}
+		// 		sh "mvn test"
 		// 	}
 		// }
-		// stage('Push Docker Image') {
+		// stage('Integration Tests') {
 		// 	steps {
-		// 		docker.withRegistry('','dockerhub'){
-		// 			dockerImage.push();
-		// 			dockerImage.push('latest');
-		// 		}
-				
+		// 		sh "mvn failsafe:integration-test: failsafe:verify"
 		// 	}
-		// }	
+		// }
+		stage('Build Docker Image') {
+			steps {
+				//PRIMITIME METHOD
+				//docker build -t bibekshr001/currency-exchange-devops:$env.Build_TAG
+
+				//BETTER HERE
+				script{
+					dockerImage = docker.build("bibekshr001/currency-exchange-devops:${env.BUILD_TAG}")
+				}
+			}
+		}
+		stage('Push Docker Image') {
+			steps {
+				docker.withRegistry('','dockerhub'){
+					dockerImage.push();
+					dockerImage.push('latest');
+				}
+				
+			}
+		}	
 				
 	}
 		post{
